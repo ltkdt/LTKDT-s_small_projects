@@ -1,0 +1,5 @@
+{
+    "sketch": "play_music_arduino.ino",
+    "board": "arduino:avr:uno",
+    "port": "/dev/ttyACM0"
+}

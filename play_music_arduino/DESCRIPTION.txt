@@ -1,0 +1,4 @@
+This contains a script for reading notes from a beginner piano website and converting it into a sheet that can be used to play music with arduino's buzzer.
+
+The thing is that Arduino cant play with 2 buzzers at the same time, so the script should omit some notes. 
+You should get a sheet from the output that sounds like you are playing a piano with just one hand. Copy it into the "Notes[]" in play_music_arduino.ino
