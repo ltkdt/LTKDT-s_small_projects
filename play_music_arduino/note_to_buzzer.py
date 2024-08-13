@@ -2,8 +2,11 @@ from pathlib import Path
 
 fileName = "note.txt"
 
-#myfile = open(fileName, "r")
-
+'''
+I don't claim copyright to the original source
+Check out: https://pianoletternotes.blogspot.com/ . They help piano beginners a lot with simplified version of popular songs.
+For this script, I'm playing Bad Apple: https://pianoletternotes.blogspot.com/2018/03/bad-apple-teppei-okada.html
+'''
 
 note_dictionary = {
     "a" : "NOTE_A",
