@@ -1,0 +1,1 @@
+This is my raylib project to draw bitmap that is meant to be displayed on an OLED screen with the resolution of 128x64 pixels. This is currently unfinished.

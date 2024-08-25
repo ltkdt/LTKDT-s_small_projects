@@ -1,5 +1,9 @@
 #include "raylib.h"
 #include <iostream>
+#include <fstream>
+#include <string>
+#include "file_handle.h"
+
 
 #define x_resolution 128
 #define y_resolution 64
@@ -8,6 +12,7 @@ typedef enum ProgramScreen { DRAW, CODE } ProgramScreen;
 
 Vector2 BeginDrawCanvas = {40, 20};
 Vector2 EndDrawCanvas = {1320, 660};
+
 
 
 int matrix_map[y_resolution][x_resolution];  // Matrix : Arr[row][column]
@@ -21,22 +26,23 @@ void init_matrix_map(){
 }
 
 
+
+
 int main(void)
 {
+    // Testing functions
+    PrintFile();
     init_matrix_map();
-    // Initialization
-    //--------------------------------------------------------------------------------------
+   
     const int screenWidth = 1360; // 1280 + 80
-    const int screenHeight = 680; // 640 + 40
+    const int screenHeight = 720; // 640 + 40 + 40
 
     ProgramScreen CurrentScreen = DRAW;
     InitWindow(screenWidth, screenHeight, "Draw your bitmap here");
 
-    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
-
-    // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
+    SetTargetFPS(60);              
+    
+    while (!WindowShouldClose())    
     {
         switch (CurrentScreen)
         {
@@ -63,7 +69,7 @@ int main(void)
                 {
                     DrawLineV( BeginDrawCanvas, {EndDrawCanvas.x, BeginDrawCanvas.y}, BLACK );
                     DrawLineV( BeginDrawCanvas, {BeginDrawCanvas.x, EndDrawCanvas.y}, BLACK );
-                    DrawLineV(  {EndDrawCanvas.x, BeginDrawCanvas.y}, EndDrawCanvas, BLACK );
+                    DrawLineV( {EndDrawCanvas.x, BeginDrawCanvas.y}, EndDrawCanvas, BLACK );
                     DrawLineV( {BeginDrawCanvas.x, EndDrawCanvas.y}, EndDrawCanvas, BLACK);
 
                     // Horizontal lines
@@ -77,25 +83,24 @@ int main(void)
                     for(int cur_x = BeginDrawCanvas.x; cur_x < 1310; cur_x += 10){
                         DrawLine(cur_x+10, BeginDrawCanvas.y, cur_x+10, EndDrawCanvas.y, BLACK); // x1, y1, x2, y2
                     }
+
+                    DrawText("Press F1 to switch screen", 500, 675, 30, BLACK);
     
                 } break;
                 case CODE:
                 {
-                    // TODO: Draw TITLE screen here!
-                    DrawRectangle(0, 0, screenWidth, screenHeight, GREEN);
 
+                    DrawText("Press F2 to switch screen", 500, 675, 30, BLACK);
                 } break;
                 default: break;
             }
 
         EndDrawing();
-        //----------------------------------------------------------------------------------
+
     }
 
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
+
+    CloseWindow();      
 
     return 0;
 }

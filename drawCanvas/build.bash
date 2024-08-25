@@ -1,1 +1,1 @@
-g++ main.cpp -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+g++ main.cpp file_handle.cpp -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
