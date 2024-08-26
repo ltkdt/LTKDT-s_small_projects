@@ -24,3 +24,7 @@ std::string readFile(){
 void PrintFile(){
     std::cout << readFile() << "\n";
 }
+
+void WriteFile(bool InvertedColor){
+    
+}

@@ -1,0 +1,6 @@
+
+                if ( IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                //if (CheckCollisionPointRec( GetMousePosition(), (Rectangle){BeginDrawCanvas.x, BeginDrawCanvas.y, 1280, 640} ) ){
+//  && 
+                    CurrentDrawTool = ERASER;
+                }
