@@ -25,6 +25,23 @@ void PrintFile(){
     std::cout << readFile() << "\n";
 }
 
-void WriteFile(bool InvertedColor){
-    
+void WriteFile(int matrix_map[64][128]){
+    std::ofstream FileHandle("object.txt");
+
+    FileHandle << "static const unsigned char myBitmap [] { " << std::endl;
+     for(int i = 0; i < 64; i++){
+        FileHandle << "\t";
+        for(int j = 0; j < 128; j++){
+            if (matrix_map[i][j] == 0){
+                FileHandle << "0x00 "; 
+            }
+            else{
+                FileHandle << "0xff ";
+            }
+        }
+        FileHandle << std::endl;
+    }
+    FileHandle << "}";
+
+    FileHandle.close();
 }

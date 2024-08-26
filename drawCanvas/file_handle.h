@@ -6,4 +6,4 @@ std::string readFile();
 
 void PrintFile();
 
-void WriteFile(bool InvertedColor = false);
+void WriteFile(int matrix_map[64][128]);

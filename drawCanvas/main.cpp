@@ -27,10 +27,12 @@ typedef enum DrawTool { PEN, ERASER } DrawTool;
 Vector2 BeginDrawCanvas = {40, 20};
 Vector2 EndDrawCanvas = {1320, 660};
 
-int matrix_map[y_resolution][x_resolution];  // Matrix : Arr[row][column]
 
 Rectangle DrawToolButton {80, 675, 200, 30};
-Rectangle DrawCanvas {40, 20, 1280, 640};
+Rectangle ResetCanvasButton {300, 675, 200, 30};
+Rectangle InvertColorButton {540, 675, 200, 30};
+
+int matrix_map[y_resolution][x_resolution];  // Matrix : Arr[row][column]
 
 int GetPositionOfMap(int pos, int offset){
     pos = pos - offset;
@@ -41,10 +43,23 @@ int PositionToCanvas(int pos, int offset){
     return offset + pos*10;
 }
 
-void init_matrix_map(){
+void reset_matrix_map(){
     for(int i = 0; i < y_resolution; i++){
         for(int j = 0; j < x_resolution; j++){
             matrix_map[i][j] = 0;
+        }
+    }
+}
+
+void invert_matrix_map(){
+    for(int i = 0; i < y_resolution; i++){
+        for(int j = 0; j < x_resolution; j++){
+            if (matrix_map[i][j] == 0 ){
+                matrix_map[i][j] = 1;
+            }
+            else{
+                matrix_map[i][j] = 0;
+            }
         }
     }
 }
@@ -53,15 +68,15 @@ int main(void)
 {
     // Testing functions
     // PrintFile();
-    init_matrix_map();
+    reset_matrix_map();
    
-    const int screenWidth = 1360; // 1280 + 80
-    const int screenHeight = 720; // 640 + 40 + 40
+    const int screenWidth = 1360; // 1280 + 80. The draw canvas only takes up 1280 pixels in terms of width
+    const int screenHeight = 720; // 640 + 80. The draw canvas only takes up 640 pixels in terms height
 
     ProgramScreen CurrentScreen = DRAW;
     DrawTool CurrentDrawTool = PEN;
 
-    InitWindow(screenWidth, screenHeight, "Draw your bitmap here");
+    InitWindow(screenWidth, screenHeight, "Simple program to draw bitmap by ltkdt");
 
     SetTargetFPS(60);              
     
@@ -74,6 +89,7 @@ int main(void)
             if (IsKeyPressed(KEY_F1))
                 {
                     CurrentScreen = CODE;
+                    WriteFile(matrix_map);
                 }
 
 
@@ -98,6 +114,14 @@ int main(void)
                     }
                 }
 
+            if ( CheckCollisionPointRec(GetMousePosition(), ResetCanvasButton) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) ){
+                reset_matrix_map();
+            }
+
+            if ( CheckCollisionPointRec(GetMousePosition(), InvertColorButton) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) ){
+                invert_matrix_map();
+            }
+
             switch (CurrentDrawTool)
             {
                 case PEN:
@@ -121,7 +145,6 @@ int main(void)
         default: break;
         }
 
-        
 
         BeginDrawing();
             ClearBackground(RAYWHITE);
@@ -129,6 +152,13 @@ int main(void)
             {
                 case DRAW:
                 {
+                    for(int i = 0; i < y_resolution; i++){
+                    for(int j = 0; j < x_resolution; j++){
+                        if (matrix_map[i][j] == 1){
+                            DrawRectangle(PositionToCanvas(j, BeginDrawCanvas.x), PositionToCanvas(i, BeginDrawCanvas.y), 10, 10, LIGHTGRAY);
+                            }
+                        }
+                    }
                     DrawLineV( BeginDrawCanvas, {EndDrawCanvas.x, BeginDrawCanvas.y}, BLACK );
                     DrawLineV( BeginDrawCanvas, {BeginDrawCanvas.x, EndDrawCanvas.y}, BLACK );
                     DrawLineV( {EndDrawCanvas.x, BeginDrawCanvas.y}, EndDrawCanvas, BLACK );
@@ -146,9 +176,16 @@ int main(void)
                         DrawLine(cur_x+10, BeginDrawCanvas.y, cur_x+10, EndDrawCanvas.y, BLACK); // x1, y1, x2, y2
                     }
 
-                    DrawText("Press F1 to switch screen", 500, 675, 30, BLACK);
-                    
+                    DrawText("Press F1 to switch to save screen", 800, 675, 25, BLACK);
+                    //DrawText("Using: Pen", 100, 680, 25, BLACK);
+
                     DrawRectangleRec(DrawToolButton, LIGHTGRAY);
+                    DrawRectangleRec(ResetCanvasButton, LIGHTGRAY);
+                    DrawRectangleRec(InvertColorButton, LIGHTGRAY);
+
+                    DrawText("Reset canvas", 315, 680, 25, BLACK);
+                    DrawText("Invert color", 565, 680, 25, BLACK);
+
                     switch (CurrentDrawTool)
                     {
                         case PEN:
@@ -162,14 +199,6 @@ int main(void)
                         default:
                         break;
                     }
-                
-                for(int i = 0; i < y_resolution; i++){
-                    for(int j = 0; j < x_resolution; j++){
-                        if (matrix_map[i][j] == 1){
-                            DrawRectangle(PositionToCanvas(j, BeginDrawCanvas.x), PositionToCanvas(i, BeginDrawCanvas.y), 10, 10, LIGHTGRAY);
-                        }
-                    }
-                }
 
                 } break;
 
@@ -181,11 +210,11 @@ int main(void)
 
                 default: break;
             }
+            
         EndDrawing();
     }
 
+CloseWindow();      
 
-    CloseWindow();      
-
-    return 0;
+return 0;
 }
