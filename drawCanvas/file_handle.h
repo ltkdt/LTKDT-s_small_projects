@@ -4,6 +4,4 @@
 
 std::string readFile();
 
-void PrintFile();
-
 void WriteFile(int matrix_map[64][128]);
