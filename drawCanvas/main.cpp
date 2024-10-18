@@ -95,7 +95,7 @@ int main(void)
 
     DrawTool CurrentDrawTool = PEN;
 
-    InitWindow(screenWidth, screenHeight, "Simple program to draw bitmap by ltkdt");
+    InitWindow(screenWidth, screenHeight, "Simple program to create byte array for monochrome screen by ltkdt");
 
     SetTargetFPS(60);              
     
@@ -110,7 +110,9 @@ int main(void)
                 int position_map_x = GetPositionOfMap(mouse_x, BeginDrawCanvas.x);
                 int position_map_y = GetPositionOfMap(mouse_y, BeginDrawCanvas.y);
                 
+                // The line below is for debugging only
                 std::cout << position_map_x << " " << position_map_y << "\n";
+
                 switch (CurrentDrawTool)
                 {
                 case PEN:
@@ -135,7 +137,7 @@ int main(void)
             invert_matrix_map();
         }
 
-        if ( (CheckCollisionPointRec(GetMousePosition(), SaveButton) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) || IsKeyPressed(KEY_F12) ){
+        if ( (CheckCollisionPointRec(GetMousePosition(), SaveButton) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) || IsKeyPressed(KEY_F2) ){
             WriteFile(matrix_map);
         }
 
@@ -200,7 +202,7 @@ int main(void)
 
                 DrawText("Reset canvas", 315, 680, 25, BLACK);
                 DrawText("Invert color", 540, 680, 25, BLACK);
-                DrawText("Save to: object.txt (Or F12)", 775, 680, 25, BLACK);
+                DrawText("Save to: bytearray.cpp (Or F2)", 775, 680, 25, BLACK);
 
                 switch (CurrentDrawTool)
                 {
