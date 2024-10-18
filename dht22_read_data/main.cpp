@@ -36,7 +36,7 @@ bool waitRepsonse(uint8_t dht22_pin){
 void readRawData(uint8_t dht22_pin){
     unsigned long time;
     uint8_t cur_byte = 0;
-    uint8_t bytelist[5];
+    uint8_t bytelist[5]; // Array to store 5 bytes: 2 for relative humidity, 2 for temperature , 1 for checksum
     uint8_t i = 0;
     while(i < 40)
     {
@@ -47,25 +47,27 @@ void readRawData(uint8_t dht22_pin){
         }
 
         while(!digitalRead(dht22_pin));      
-        //delayMicroseconds(50);
+        // The input should be low for about 50 microseconds
         time = micros();
-        //--------------------------------------------------------------------
+
         while( digitalRead(dht22_pin) ) ;
-        // databyte = (micros() - time > 60) ? (databyte<<1)|(0x01) : databyte<<1 ;
+        // High voltage for more than 30 microseconds --> Bit 1 , otherwise Bit 0
         cur_byte = ( micros() - time > 30 ) ? (cur_byte << 1)|(1) : cur_byte << 1;
         i++;
     }
-    bytelist[4] = cur_byte;
+    bytelist[4] = cur_byte; // after the final iteration, we have all 8 bits for checksum
 
+    // Combine each two bytes
     uint16_t raw_humidity = ( bytelist[0] << 8) | (bytelist[1]) ;
     uint16_t raw_temperature = ( bytelist[2] << 8) | (bytelist[3]) ;
 
-    // Once we have the raw data we can then process it.
+    // The first byte is the integral part and the second is the decimal so we need to divide by 10 to get the real result
     Serial.print("Relative humidity (%): ");
     Serial.println( float(raw_humidity) / 10.0 );
     Serial.print("Temperature (oC): ");
     Serial.println( float(raw_temperature) / 10.0 );
 
+    // The last 8 bit of the sum of 4 initial bytes should equal to checksum
     if ( ((bytelist[0] + bytelist[1] + bytelist[2] + bytelist[3]) & 255) == bytelist[4]){
         Serial.println("Checksum correct. Data is valid");
     }
