@@ -8,7 +8,6 @@
 #include "hal/adc_types.h"
 
 #include "esp_adc/adc_cali_scheme.h"
-#include "esp_adc/adc_filter.h"
 #include "esp_adc/adc_cali.h"
 
 /*
@@ -65,6 +64,7 @@ void ADCTask(void *arg){
 
         vTaskDelay(100);
     }
+    adc_oneshot_del_unit(handle);
     adc_cali_delete_scheme_line_fitting(cali_handle);
     vTaskDelete(NULL);
 }
