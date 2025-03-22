@@ -49,9 +49,9 @@ void app_main(void) {
       u8g2_esp32_i2c_byte_cb,
       u8g2_esp32_gpio_and_delay_cb);  // These are I2C callback function for mapping 
 
-  u8g2_t u8g2;  // a structure which will contain all the data for one display
+  u8g2_t u8g2;  // this structure which will contain all the data for the display
 
-  u8x8_SetI2CAddress(&u8g2.u8x8, 0x78);
+  u8x8_SetI2CAddress(&u8g2.u8x8, 0x78);  // The address is left-shifted 1 bit
   ESP_LOGI(TAG, "u8g2_InitDisplay");
   u8g2_InitDisplay(&u8g2);  // send init sequence to the display, display is in sleep mode after this,
 
